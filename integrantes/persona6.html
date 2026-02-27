@@ -3,10 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Perfil — Boris Vinces</title>
+  <title>Perfil — Enrique Zambrano</title>
   <link rel="icon" type="image/png" href="../assets/img/icono.png">
   <link rel="stylesheet" href="styles-individual.css"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #8e44ad; /* Fondo morado tranquilo */
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .sidebar img {
+      width: 150px;
+      border-radius: 50%;
+    }
+    .content {
+      padding: 20px;
+    }
+    .photos {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .photos img {
+      width: 200px;
+      height: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -17,16 +44,16 @@
   <main class="layout">
     <!-- ===== PANEL IZQUIERDO (EDITAR) ===== -->
     <aside class="sidebar">
-      <img class="avatar-xl" src="../assets/img/Boris.jpg" alt="Foto de Boris Vinces">
-      <h2 class="name">Boris Vinces</h2>
+      <img class="avatar-xl" src="../assets/img/kike.jpg" alt="Foto de Enrique Zambrano">
+      <h2 class="name">Enrique Zambrano</h2>
       <p class="role">Rol: Desarrollador Full-Stack en formación</p>
 
       <dl class="facts">
-        <div><dt>Nombres</dt><dd>Boris Vinces</dd></div>
-        <div><dt>Edad</dt><dd>19</dd></div>
-        <div><dt>Fecha de nacimiento</dt><dd>2006-03-24</dd></div>
+        <div><dt>Nombres</dt><dd>Enrique Zambrano</dd></div>
+        <div><dt>Edad</dt><dd>20</dd></div>
+        <div><dt>Fecha de nacimiento</dt><dd>2005-07-26</dd></div>
         <div><dt>Ciudad</dt><dd>Ambato, Ecuador</dd></div>
-        <div><dt>Email</dt><dd><a href="mailto:bvinces0274@uta.edu.ec">bvinces0274@uta.edu.ec</a></dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:enriquexkikecrak710@gmail.com">enriquexkikecrak710@gmail.com</a></dd></div>
       </dl>
 
       <div class="tags">
@@ -40,46 +67,44 @@
       <details class="card" open>
         <summary>Biografía</summary>
         <p>
-          Soy estudiante de cuarto semestre en la carrera de Desarrollo de Software. Durante mi formación he trabajado en proyectos aplicando programación orientada a objetos, algoritmos, estructuras de datos y gestión de bases de datos. He desarrollado aplicaciones en Java con interfaces gráficas e integración de archivos externos, además de realizar simulaciones en Python y explorar el desarrollo web con HTML, CSS y JavaScript.
+          Soy estudiante de cuarto semestre en Ingeniería de Software. Me apasiona el fútbol, la música, y la programación. A lo largo de mi formación he trabajado en proyectos usando programación orientada a objetos, estructuras de datos y bases de datos. También he incursionado en desarrollo web y me encanta aprender nuevas tecnologías.
         </p>
         <p>
-          Mi experiencia se complementa con el uso de patrones de diseño y proyectos que combinan creatividad y lógica, incluyendo sistemas interactivos y aplicaciones con manejo dinámico de datos. También me interesa el campo de la ciberseguridad, área que considero clave en la actualidad.
-        </p>
-        <p>
-          Entre mis principales aficiones se encuentra el gusto por los videojuegos, lo que me motiva a plantearme como meta personal el desarrollo de mi propio videojuego en el futuro.
+          Además, me gusta explorar el mundo de la creación musical y en mis tiempos libres soy ludópata.
         </p>
       </details>
-
       <!-- Bloque desplegable 2 -->
       <details class="card">
         <summary>¿Qué me gusta hacer?</summary>
         <ul class="bullets">
-          <li>Desarrollar aplicaciones web interactivas.</li>
-          <li>Analizar y mejorar la experiencia de usuario.</li>
-          <li>Explorar conceptos de ciberseguridad y buenas prácticas en software.</li>
-          <li>Jugar videojuegos y descubrir nuevas formas de narrativas interactivas.</li>
-          <li>Trabajar en proyectos que integren creatividad y programación.</li>
+          <li>Leer Libros</li>
+          <li>Crear música.</li>
+          <li>Jugar fútbol.</li>
+          <li>Explorar nuevos proyectos que combinen mi pasión por la tecnología y la creatividad.</li>
         </ul>
       </details>
+
+      <!-- Bloque de Fotos -->
+      <div class="photos">
+        <img src="../assets/img/kike2.jpg" alt="Foto 1">
+        <img src="../assets/img/Kike3.jpeg" alt="Foto 2">
+        <img src="../assets/img/Kike4.jpeg" alt="Foto 3">
+        <img src="../assets/img/Kike5.jpeg" alt="Foto 4">
+      </div>
 
       <!-- Bloque desplegable 3 -->
       <details class="card">
         <summary>Proyectos destacados</summary>
         <div class="projects">
           <article class="proj">
-            <h3>Plataforma Educativa SPINO</h3>
-            <p>Aplicación web para aprendizaje básico en programación y estructuras de datos.</p>
-            <a class="btn-link" href="https://github.com/Boris2403/ProyectoEstructura.git" target="_blank" rel="noopener">Repositorio</a>
+            <h3>Plataforma de Gestión de Estacionamientos</h3>
+            <p>Desarrollo de una página web universitaria para la gestión de estacionamientos.</p>
+            <a class="btn-link" href="https://github.com/Kikessj710/fundamentos.git" target="_blank" rel="noopener">Repositorio</a>
           </article>
           <article class="proj">
-            <h3>Página de seguros</h3>
-            <p>Desarrollada en equipo durante la materia de Modelamiento de Software, con enfoque en arquitectura y diseño.</p>
-            <a class="btn-link" href="https://github.com/MateoAuz/PlataformaSeguros.git" target="_blank" rel="noopener">Repositorio</a>
-          </article>
-          <article class="proj">
-            <h3>Juego de Barcos</h3>
-            <p>Proyecto colaborativo para aplicar y demostrar el análisis de patrones de diseño.</p>
-            <a class="btn-link" href="https://github.com/MateoAuz/JuegoDeBarcos.git" target="_blank" rel="noopener">Repositorio</a>
+            <h3>Plataforma de una tienda virtual</h3>
+            <p>Desarrollo de una página web para una tienda virtual.</p>
+            <a class="btn-link" href="https://github.com/Jonathan305g/Marketplace_Modelamiento.git" target="_blank" rel="noopener">Repositorio</a>
           </article>
         </div>
       </details>
@@ -88,29 +113,17 @@
       <details class="card">
         <summary>Contacto & Redes</summary>
         <div class="redes-contacto">
-          <a href="https://github.com/Boris2403" class="red-link" target="_blank" rel="noopener" aria-label="GitHub">
-            <img src="../assets/img/github.png" alt="GitHub" class="red-icon">
-            <span>GitHub</span>
-          </a>
-          <a href="https://www.facebook.com/boris.vinces.cueva" class="red-link" target="_blank" rel="noopener" aria-label="Facebook">
-            <img src="../assets/img/facebook.png" alt="Facebook" class="red-icon">
-            <span>Facebook</span>
-          </a>
-          <a href="https://www.instagram.com/yussef_vinces24" class="red-link" target="_blank" rel="noopener" aria-label="Instagram">
+          <a href="https://www.instagram.com/larzy0_0/" class="red-link" target="_blank" rel="noopener" aria-label="Instagram">
             <img src="../assets/img/instagram.png" alt="Instagram" class="red-icon">
             <span>Instagram</span>
           </a>
-          <a href="mailto:holasboring@gmail.com" class="red-link" aria-label="Email">
-            <img src="../assets/img/mail.png" alt="Email" class="red-icon">
-            <span>Email</span>
+          <a href="https://www.youtube.com/watch?v=6tGs7QvBwi4&list=RD6tGs7QvBwi4&start_radio=1" class="red-link" target="_blank" rel="noopener" aria-label="Youtube">
+            <img src="../assets/img/Youtube.png" alt="YouTube" class="red-icon">
+            <span>Youtube</span>
           </a>
-          <a href="tel:+593998247808" class="red-link" aria-label="Teléfono">
-            <img src="../assets/img/phone.png" alt="Teléfono" class="red-icon">
-            <span>+593 99 824 7808</span>
-          </a>
-          <a href="https://www.linkedin.com/in/boris-vinces-698296305" class="red-link" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <img src="../assets/img/linkedin.png" alt="LinkedIn" class="red-icon">
-            <span>LinkedIn</span>
+          <a href="https://www.facebook.com/enrique.zambrano.3087" class="red-link" aria-label="Facebook">
+            <img src="../assets/img/facebook.png" alt="Facebook" class="red-icon">
+            <span>Facebook</span>
           </a>
         </div>
       </details>
@@ -118,7 +131,7 @@
       <details class="card">
         <summary>🎮 Mi Juego Interactivo</summary>
         <div style="text-align: center; padding: 20px;">
-          <a href="../juegos/Conversor de monedas/conversor.html" class="btn-link" style="margin: 15px auto; display: inline-block;">
+          <a href="../juegos/Pong/Pong.html" class="btn-link" style="margin: 15px auto; display: inline-block;">
             Jugar ahora
           </a>
         </div>
@@ -127,7 +140,7 @@
   </main>
 
   <footer class="footer">
-    <p>&copy; 2025 Equipo Dinamita — UTA</p>
+    <p>&copy; 2026 Enrique Zambrano</p>
   </footer>
 
   <script src="toggle-remember.js"></script>
