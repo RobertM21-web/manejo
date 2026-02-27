@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clicker con Logros</title>
+  <style>
+    :root{
+      --bg:#0f1226;--panel:#171a36;--accent:#6d7cff;--accent-2:#22d3ee;--text:#f1f5f9;--muted:#94a3b8;--good:#22c55e;--warn:#f59e0b;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      background: radial-gradient(1200px 600px at 80% -20%, rgba(109,124,255,.2), transparent),
+                  radial-gradient(900px 500px at -20% 110%, rgba(34,211,238,.18), transparent),
+                  var(--bg);
+      color:var(--text);
+      display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .app{width:100%;max-width:980px; display:grid; gap:16px; grid-template-columns: 1.2fr .8fr;}
+    @media (max-width:900px){.app{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:18px; box-shadow:var(--shadow);}
+    .panel{padding:18px}
+    .header{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .header h1{font-size:clamp(20px,3vw,28px); margin:0; letter-spacing:.3px}
+    .stats{display:flex; gap:14px; flex-wrap:wrap}
+    .stat{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); padding:10px 12px; border-radius:12px; min-width:110px}
+    .stat .label{font-size:12px; color:var(--muted)}
+    .stat .value{font-weight:700; font-size:20px}
+    
+    .click-zone{display:grid; place-items:center; padding:24px 18px 50px}
+    .btn{
+      --s: 145px;
+      appearance:none; border:none; outline:none; cursor:pointer;
+      width:var(--s); height:var(--s); border-radius:999px; font-weight:800; font-size:22px;
+      color:#0b1024; background: radial-gradient(circle at 30% 30%, #ffffff, #c7d2fe 60%, #a5b4fc);
+      box-shadow: 0 12px 0 #6366f1, 0 24px 40px rgba(109,124,255,.45);
+      transform: translateY(0); transition: transform .07s ease, box-shadow .07s ease, filter .15s ease;
+      user-select:none; position:relative; overflow:hidden;
+    }
+    .btn:active{transform: translateY(10px); box-shadow: 0 2px 0 #6366f1, 0 8px 20px rgba(109,124,255,.6)}
+    .btn:disabled{filter:grayscale(.8); cursor:not-allowed}
+
+    .controls{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:60px}
+    .chip{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:var(--text); padding:8px 12px; border-radius:999px; font-size:13px; cursor:pointer}
+    .chip:hover{background:rgba(255,255,255,.1)}
+
+    .achievements{padding:14px}
+    .achievements h2{margin:4px 6px 8px; font-size:18px; color:var(--muted)}
+    .list{display:grid; gap:10px; padding:8px}
+    .ach{display:flex; align-items:center; gap:12px; padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04)}
+    .ach .icon{width:36px; height:36px; border-radius:10px; display:grid; place-items:center; font-weight:800; background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:#0b1024}
+    .ach .meta{flex:1}
+    .ach .meta .name{font-weight:700}
+    .ach.locked{opacity:.55; filter:saturate(.5)}
+
+    .toast{position:fixed; left:50%; top:18px; transform:translateX(-50%); z-index:50; display:none}
+    .toast.show{display:block}
+    .toast .inner{background:linear-gradient(135deg, rgba(34,197,94,.15), rgba(34,211,238,.15)); border:1px solid rgba(255,255,255,.16); padding:10px 14px; border-radius:12px; backdrop-filter: blur(6px);}
+
+    .footer{color:var(--muted); font-size:12px; text-align:center; padding:8px 0 2px}
+    a{color:var(--accent-2)}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="card panel">
+      <div class="header">
+        <h1>Clicker — ¡Gana logros con tus clics!</h1>
+        <div class="stats">
+          <div class="stat"><div class="label">Clics totales</div><div id="total" class="value">0</div></div>
+          <div class="stat"><div class="label">Clics sesión</div><div id="session" class="value">0</div></div>
+          <div class="stat"><div class="label">Logros</div><div id="achCount" class="value">0</div></div>
+        </div>
+      </div>
+
+      <div class="click-zone">
+        <button id="clickBtn" class="btn" aria-label="Dar clic">CLIC</button>
+        <div class="controls">
+          <button id="resetSession" class="chip" title="Reinicia contadores de la sesión">Reiniciar sesión</button>
+          <button id="resetAll" class="chip" title="Borra TODO (incluye progreso guardado)">Borrar todo</button>
+          <button id="mute" class="chip" title="Silenciar/activar sonidos">🔊 Sonido</button>
+        </div>
+      </div>
+      <div class="footer">Hecho para ti. Personaliza metas en <code>achievements</code> dentro del script.</div>
+    </div>
+
+    <div class="card achievements">
+      <h2>Logros</h2>
+      <div id="achList" class="list"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"><div class="inner" id="toastMsg">¡Logro desbloqueado!</div></div>
+
+  <audio id="sndClick" preload="auto">
+    <source src="data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQAAABFhbnZvY2FkbyBSb3lhbHR5AAA=" type="audio/mp3" />
+  </audio>
+  <audio id="sndAch" preload="auto">
+    <source src="data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQAAABFhbnZvY2FkbyBSb3lhbHR5AAA=" type="audio/mp3" />
+  </audio>
+
+  <script>
+    // --- Configurable: metas de logros ---
+    const achievements = [
+      { id: 'a10',  threshold: 10,  name: 'Calentando', desc: 'Has alcanzado 10 clics.' },
+      { id: 'a25',  threshold: 25,  name: 'Dedo ágil', desc: '25 clics acumulados.' },
+      { id: 'a50',  threshold: 50,  name: 'Combo x50', desc: '¡Buen ritmo!' },
+      { id: 'a100', threshold: 100, name: 'Centenar', desc: '100 clics totales.' },
+      { id: 'a250', threshold: 250, name: 'Clickeador', desc: '250 clics totales.' },
+      { id: 'a500', threshold: 500, name: 'Leyenda local', desc: 'Medio millar de clics.' },
+      { id: 'a1k',  threshold: 1000,name: 'Milestone', desc: '¡1.000 clics!' }
+    ];
+
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+
+    const els = {
+      total: $('#total'), session: $('#session'), achCount: $('#achCount'),
+      list: $('#achList'), toast: $('#toast'), toastMsg: $('#toastMsg'), btn: $('#clickBtn'),
+      resetAll: $('#resetAll'), resetSession: $('#resetSession'), mute: $('#mute'),
+      sndClick: $('#sndClick'), sndAch: $('#sndAch')
+    };
+
+    const storageKey = 'simple-clicker-v1';
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+
+    const state = {
+      total: Number(saved.total || 0),
+      session: 0,
+      unlocked: new Set(saved.unlocked || []),
+      sound: saved.sound !== false, // default true
+    };
+
+    function save(){
+      localStorage.setItem(storageKey, JSON.stringify({
+        total: state.total,
+        unlocked: Array.from(state.unlocked),
+        sound: state.sound
+      }));
+    }
+
+    function fmt(n){
+      return n.toLocaleString('es-EC');
+    }
+
+    function renderStats(){
+      els.total.textContent = fmt(state.total);
+      els.session.textContent = fmt(state.session);
+      els.achCount.textContent = state.unlocked.size + '/' + achievements.length;
+      els.mute.textContent = (state.sound? '🔊 Sonido' : '🔈 Silencio');
+    }
+
+    function renderAchievements(){
+      els.list.innerHTML = '';
+      achievements.forEach(a => {
+        const unlocked = state.unlocked.has(a.id);
+        const row = document.createElement('div');
+        row.className = 'ach' + (unlocked? '' : ' locked');
+        row.innerHTML = `
+          <div class="icon">${unlocked? '🏆' : '🔒'}</div>
+          <div class="meta">
+            <div class="name">${a.name}</div>
+            <div class="desc">${a.desc} <span style="color:var(--muted)">Meta: ${fmt(a.threshold)}</span></div>
+          </div>
+        `;
+        els.list.appendChild(row);
+      });
+    }
+
+    let lastPop = 0;
+    function popAnimation(){
+      const now = Date.now();
+      const delta = Math.min(200, now - lastPop);
+      lastPop = now;
+      els.btn.animate([
+        { transform: 'translateY(0) scale(1)' },
+        { transform: 'translateY(2px) scale(1.06)' },
+        { transform: 'translateY(0) scale(1)' }
+      ], { duration: 120 + (200-delta)*.2, easing: 'cubic-bezier(.2,.7,.3,1)' });
+    }
+
+    function toast(msg){
+      els.toastMsg.textContent = msg;
+      els.toast.classList.add('show');
+      setTimeout(()=> els.toast.classList.remove('show'), 1800);
+    }
+
+    function tryUnlock(){
+      achievements.forEach(a => {
+        if(state.total >= a.threshold && !state.unlocked.has(a.id)){
+          state.unlocked.add(a.id);
+          if(state.sound) els.sndAch.cloneNode(true).play?.();
+          toast(`🏆 ${a.name} — ${a.desc}`);
+        }
+      });
+    }
+
+    function clickOnce(){
+      state.total += 1;
+      state.session += 1;
+      if(state.sound) els.sndClick.cloneNode(true).play?.();
+      popAnimation();
+      tryUnlock();
+      renderStats();
+      save();
+    }
+
+    function bind(){
+      els.btn.addEventListener('click', clickOnce);
+      document.addEventListener('keydown', (e)=>{
+        if(['Space','Enter'].includes(e.code)){
+          e.preventDefault(); clickOnce();
+        }
+      });
+      els.resetSession.addEventListener('click', ()=>{
+        state.session = 0; renderStats();
+      });
+      els.resetAll.addEventListener('click', ()=>{
+        if(confirm('Esto borrará TODO tu progreso guardado. ¿Continuar?')){
+          state.total = 0; state.session = 0; state.unlocked.clear(); save(); renderStats(); renderAchievements();
+        }
+      });
+      els.mute.addEventListener('click', ()=>{ state.sound = !state.sound; save(); renderStats(); });
+    }
+
+    // init
+    renderStats();
+    renderAchievements();
+    bind();
+  </script>
+</body>
+</html>

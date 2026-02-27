@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Equipo Dinamita</title>
+  <link rel="icon" type="image/png" href="../assets/img/icono.png">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <!-- HERO -->
+  <header id="hero" aria-label="Sección de portada">
+    <h1>EQUIPO DINAMITA</h1>
+  </header>
+
+  <!-- PRESENTACIÓN (panel claro) -->
+  <section class="presentacion" id="presentacion" aria-labelledby="titulo-presentacion">
+    <h2 id="titulo-presentacion">✨ Presentación del Grupo ✨</h2>
+    <br><br>
+    <p>
+      Somos un equipo que nació desde el primer día en la U. Entre clases, trabajos y desveladas, descubrimos no solo nuestras fortalezas como estudiantes, sino también la química que tenemos para trabajar juntos. Nos conocemos al punto de saber quién se queda con el café, quién arregla los bugs de madrugada y quién nunca pierde la oportunidad de lanzar una broma para aligerar el ambiente.
+    </p>
+    <br><br>
+    <p>
+      Sí, nos gusta molestar y reírnos un rato, porque sabemos que la buena vibra mantiene la energía arriba. Pero al mismo tiempo, la responsabilidad es la base que nos sostiene: entregamos, cumplimos y sacamos adelante cada proyecto como equipo. Esa mezcla de confianza, compromiso y camaradería es lo que nos define.
+    </p>
+    <br><br>
+    <p>
+      Más que un grupo, somos un combo creativo y responsable, donde cada uno aporta su estilo, su forma de pensar y su talento. Al final del día, sabemos que la clave está en disfrutar lo que hacemos sin dejar de lado la excelencia.
+    </p>
+  </section>
+
+  <!-- INTEGRANTES (panel claro con título integrado) -->
+  <section class="integrantes" id="integrantes" aria-labelledby="titulo-integrantes">
+    <h2 id="titulo-integrantes" class="titulo-integrantes">Integrantes</h2>
+
+    <div class="cards">
+      <div class="card">
+        <img src="assets/img/foto_damian.jpeg" alt="Foto de Joseph Chachalo" class="avatar" />
+        <h3>Joseph Chachalo</h3>
+        <p class="role-badge">Rol: Coordinador de Equipo</p>
+        <p>Gestor de proyectos y a veces payaso del equipo.</p>
+        <a class="btn-neutral" href="integrantes/persona1.html">Ver más</a>
+      </div>
+
+      <div class="card">
+        <img src="assets/img/foto robert.jpeg" alt="Foto de Nombre 2" class="avatar" />
+        <h3>Robert Montesdeoca</h3>
+        <p class="role-badge">Rol: Gym Bro</p>
+        <p>Adicto a comprar ropa y a las apuestas deportivas.</p>
+        <a class="btn-neutral" href="integrantes/persona2.html">Ver más</a>
+      </div>
+
+      <div class="card">
+        <img src="assets/img/kora.jpeg" alt="Foto de Nombre 3" class="avatar" />
+        <h3>Korayma Pico</h3>
+        <p class="role-badge">Rol: UX/UI</p>
+        <p>Diseñador con ojo clínico para el detalle visual.</p>
+        <a class="btn-neutral" href="integrantes/persona3.html">Ver más</a>
+      </div>
+
+      <div class="card">
+        <img src="assets/img/Jonathan.jpg" alt="Foto de Jonathan Jirón" class="avatar" />
+        <h3>Jonathan Jirón</h3>
+        <p class="role-badge">Rol: Desarrollador de Aplicativos en formación</p>
+        <p>Amigable, bromista y apasionado por crear aplicativos innovadores.</p>
+        <a class="btn-neutral" href="integrantes/persona4.html">Ver más</a>
+      </div>
+
+      <div class="card">
+        <img src="assets/img/FotoPerfil-Andres.jpg" alt="Foto de Nombre 5" class="avatar" />
+        <h3>Andrés Paredes</h3>
+        <p class="role-badge">Rol: Frontend y Backend</p>
+        <p>Working On Me. Soy una persona perfeccionista, amante a los gatos y a la adrenalina.</p>
+        <a class="btn-neutral" href="integrantes/persona5.html">Ver más</a>
+      </div>
+
+      <div class="card">
+        <img src="assets/img/Boris.jpg" alt="Foto de Boris Vinces" class="avatar" />
+        <h3>Boris Vinces</h3>
+        <p class="role-badge">Rol: Desarrollador Full-Stack en formación</p>
+        <p>Apasionado por la programación, la ciberseguridad y los videojuegos.</p>
+        <a class="btn-neutral" href="integrantes/persona6.html">Ver más</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Equipo Dinamita - UTA</p>
+  </footer>
+
+  <!-- Reveal suave al hacer scroll -->
+  <script>
+    // IntersectionObserver para revelar cards
+    const cards = document.querySelectorAll('.card');
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach((e, i)=>{
+        if(e.isIntersecting){
+          setTimeout(()=> e.target.classList.add('in-view'), i*80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach(c => obs.observe(c));
+  </script>
+  <script>
+  // Al cargar index.html, revisa si hay scroll guardado y lo aplica
+  document.addEventListener('DOMContentLoaded', function() {
+    const scroll = localStorage.getItem('scrollIndex');
+    if(scroll !== null) {
+      window.scrollTo({ top: parseInt(scroll, 10), behavior: 'smooth' });
+      localStorage.removeItem('scrollIndex');
+    }
+
+    // Para todos los enlaces a perfiles, guarda el scroll antes de salir
+    document.querySelectorAll('a[href*="persona"]').forEach(link => {
+      link.addEventListener('click', function() {
+        localStorage.setItem('scrollIndex', window.scrollY);
+      });
+    });
+  });
+  </script>
+  <script>
+    // Siempre empieza en la parte superior al cargar la página
+    window.history.scrollRestoration = "manual";
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    };
+  </script>
+</body>
+</html>

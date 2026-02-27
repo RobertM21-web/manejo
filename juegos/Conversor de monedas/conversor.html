@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Divisas del Mundo — Conversor y Fichas</title>
+  <style>
+    :root{ --bg:#f4f6f9; --text:#1f2937; --card:#ffffff; --muted:#6b7280 }
+    *{box-sizing:border-box}
+    body{margin:18px; font-family:Inter, system-ui, Arial; background:var(--bg); color:var(--text)}
+
+    header{display:flex; gap:18px; align-items:center; justify-content:space-between; margin-bottom:16px}
+    h1{margin:0; font-size:20px}
+
+    .top{display:grid; grid-template-columns: 1fr 360px; gap:18px; align-items:start}
+    .panel{background:var(--card); padding:14px; border-radius:12px; box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+
+    /* Converter */
+    .converter{display:flex; flex-direction:column; gap:10px}
+    .row{display:flex; gap:10px; align-items:center}
+    select,input{padding:10px; border-radius:8px; border:1px solid #e6eef8; min-width:0}
+    .amount{flex:1}
+    button{background:#0ea5e9; color:#04202b; border:none; padding:10px 12px; border-radius:8px; font-weight:700; cursor:pointer}
+    button.ghost{background:transparent; border:1px solid rgba(0,0,0,0.06); color:var(--muted)}
+    .result{font-weight:800; margin-top:8px}
+
+    .rates-list{max-height:300px; overflow:auto}
+    .rates-list table{width:100%; border-collapse:collapse}
+    .rates-list th, .rates-list td{padding:6px 8px; text-align:left; border-bottom:1px solid #f1f5f9}
+    .rates-list th{font-size:13px; color:var(--muted)}
+
+    /* Cards area */
+    .currency-container{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:18px}
+    .currency-card{background:var(--card); border-left:6px solid var(--accent,#0ea5e9); padding:12px; border-radius:8px; box-shadow:0 6px 14px rgba(2,6,23,0.04)}
+    .currency-card h2{margin:0 0 6px; font-size:16px}
+    .meta{font-size:13px; color:var(--muted); margin-bottom:8px}
+    .history{font-size:13px; color:#374151}
+    .rate{font-weight:800; margin-top:8px}
+
+    footer{margin-top:18px; font-size:13px; color:var(--muted)}
+
+    @media(max-width:980px){ .top{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌍 Divisas del Mundo — Conversor</h1>
+  </header>
+
+  <div class="top">
+    <div class="panel">
+      <div class="converter">
+        <label style="font-size:13px; color:var(--muted)">Elige la divisa de origen, destino y la cantidad</label>
+        <div class="row">
+          <select id="from"></select>
+          <select id="to"></select>
+          <input id="amount" class="amount" type="number" placeholder="Cantidad" min="0" step="any">
+        </div>
+        <div class="row">
+          <button id="convertBtn">Convertir</button>
+          <button id="swapBtn" class="ghost">Intercambiar</button>
+          <button id="resetBtn" class="ghost">Reiniciar</button>
+        </div>
+        <div class="result" id="result">—</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:8px">Consejo: puedes presionar Enter para convertir y usar "Intercambiar" para invertir monedas.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+        <strong>Tasas principales (referencia)</strong>
+        <span style="font-size:13px; color:var(--muted)">1 unidad = USD</span>
+      </div>
+      <div class="rates-list">
+        <table id="ratesTable">
+          <thead><tr><th>Divisa</th><th>País</th><th>1 unidad ≈ (USD)</th><th>1 USD ≈</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <section class="currency-container panel" id="cards">
+    <!-- tarjetas de cada divisa -->
+  </section>
+
+  
+<script>
+// --- Datos de 20 divisas ---
+const currencies = [
+  {code:'USD', name:'Dólar Estadounidense', country:'Estados Unidos', rateUSD:1.000, color:'#1e88e5', history:'Moneda oficial desde 1792; sirve como divisa de reserva global.'},
+  {code:'EUR', name:'Euro', country:'Unión Europea', rateUSD:1.09, color:'#6f42c1', history:'Introducido en 1999; moneda común para muchos países europeos.'},
+  {code:'GBP', name:'Libra Esterlina', country:'Reino Unido', rateUSD:1.27, color:'#2e7d32', history:'Una de las monedas más antiguas, en uso por más de mil años.'},
+  {code:'JPY', name:'Yen', country:'Japón', rateUSD:0.0068, color:'#f59e0b', history:'Adoptado en 1871 durante la modernización Meiji.'},
+  {code:'CNY', name:'Yuan (Renminbi)', country:'China', rateUSD:0.14, color:'#d32f2f', history:'Divisa de la República Popular desde 1949.'},
+  {code:'INR', name:'Rupia', country:'India', rateUSD:0.012, color:'#fb8c00', history:'Moneda con raíces antiguas; la rupia moderna se consolidó en el siglo XX.'},
+  {code:'BRL', name:'Real', country:'Brasil', rateUSD:0.20, color:'#43a047', history:'Adoptado en 1994 como parte del Plan Real para estabilizar la economía.'},
+  {code:'RUB', name:'Rublo', country:'Rusia', rateUSD:0.011, color:'#8e24aa', history:'Con historia desde la Edad Media; ha sufrido diversas reformas.'},
+  {code:'CAD', name:'Dólar Canadiense', country:'Canadá', rateUSD:0.74, color:'#00acc1', history:'Adoptado oficialmente en el siglo XIX; fuerte presencia en materias primas.'},
+  {code:'MXN', name:'Peso Mexicano', country:'México', rateUSD:0.059, color:'#ff7043', history:'Deriva del real español y en uso desde la época colonial.'},
+  {code:'AUD', name:'Dólar Australiano', country:'Australia', rateUSD:0.63, color:'#29b6f6', history:'Moneda moderna desde 1966; influenciada por precios de materias primas.'},
+  {code:'NZD', name:'Dólar Neozelandés', country:'Nueva Zelanda', rateUSD:0.57, color:'#7e57c2', history:'Uso oficial desde 1967; economía ligada al agro y exportaciones.'},
+  {code:'CHF', name:'Franco Suizo', country:'Suiza', rateUSD:1.12, color:'#546e7a', history:'Moneda estable y refugio financiero por excelencia.'},
+  {code:'SEK', name:'Corona Sueca', country:'Suecia', rateUSD:0.095, color:'#0288d1', history:'Moneda escandinava con historia moderna desde el siglo XIX.'},
+  {code:'NOK', name:'Corona Noruega', country:'Noruega', rateUSD:0.096, color:'#d81b60', history:'Moneda ligada a ingresos petroleros y al mercado escandinavo.'},
+  {code:'SGD', name:'Dólar Singapurense', country:'Singapur', rateUSD:0.74, color:'#00897b', history:'Moneda fuerte en Asia, usada en centro financiero regional.'},
+  {code:'KRW', name:'Won', country:'Corea del Sur', rateUSD:0.00076, color:'#5c6bc0', history:'Divisa con cambios importantes tras la industrialización surcoreana.'},
+  {code:'ZAR', name:'Rand', country:'Sudáfrica', rateUSD:0.053, color:'#ffb300', history:'Moneda sudafricana, influenciada por los precios de minerales.'},
+  {code:'TRY', name:'Lira Turca', country:'Turquía', rateUSD:0.054, color:'#ef6c00', history:'Ha sufrido reformas y redenominaciones en el siglo XX y XXI.'},
+  {code:'AED', name:'Dirham', country:'Emiratos Árabes Unidos', rateUSD:0.27, color:'#6d4c41', history:'Moneda ligada al comercio petrolero del Golfo Pérsico.'}
+];
+
+// --- DOM refs ---
+const fromS = document.getElementById('from');
+const toS = document.getElementById('to');
+const amountI = document.getElementById('amount');
+const convertBtn = document.getElementById('convertBtn');
+const swapBtn = document.getElementById('swapBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resultEl = document.getElementById('result');
+const ratesTableBody = document.querySelector('#ratesTable tbody');
+const cardsEl = document.getElementById('cards');
+
+// --- Helpers ---
+function populateSelectors(){
+  currencies.forEach(c=>{
+    const opt1 = document.createElement('option'); opt1.value=c.code; opt1.textContent=`${c.code} — ${c.name}`;
+    const opt2 = opt1.cloneNode(true);
+    fromS.appendChild(opt1); toS.appendChild(opt2);
+  });
+  fromS.value='USD'; toS.value='EUR';
+}
+
+function renderRates(){
+  ratesTableBody.innerHTML='';
+  currencies.forEach(c=>{
+    const tr = document.createElement('tr');
+    const tdCode = document.createElement('td'); tdCode.textContent = `${c.code} — ${c.name}`;
+    const tdCountry = document.createElement('td'); tdCountry.textContent = c.country;
+    const tdRate = document.createElement('td'); tdRate.textContent = `${c.rateUSD.toFixed(4)} USD`;
+    const tdInvert = document.createElement('td');
+    const oneUsdIn = (1 / c.rateUSD);
+    tdInvert.textContent = `${oneUsdIn >= 0.0001 ? oneUsdIn.toFixed(4) : oneUsdIn.toExponential(4)} ${c.code}`;
+    tr.appendChild(tdCode); tr.appendChild(tdCountry); tr.appendChild(tdRate); tr.appendChild(tdInvert);
+    ratesTableBody.appendChild(tr);
+  });
+}
+
+function renderCards(){
+  cardsEl.innerHTML='';
+  currencies.forEach(c=>{
+    const div = document.createElement('div');
+    div.className='currency-card';
+    div.style.setProperty('--accent', c.color);
+    div.innerHTML = `<h2>${c.code} — ${c.name}</h2>
+                     <div class="meta">País: ${c.country}</div>
+                     <div class="history">${c.history}</div>
+                     <div class="rate">1 ${c.code} ≈ ${c.rateUSD.toFixed(4)} USD</div>`;
+    cardsEl.appendChild(div);
+  });
+}
+
+function findCurrency(code){ return currencies.find(c=>c.code===code); }
+
+function convert(){
+  const from = fromS.value; const to = toS.value; const amt = parseFloat(amountI.value);
+  if(isNaN(amt) || amt < 0){ resultEl.textContent = '⚠️ Ingresa una cantidad válida.'; return; }
+  if(from === to){ resultEl.textContent = `${amt} ${from} = ${amt} ${to}`; return; }
+  const cFrom = findCurrency(from); const cTo = findCurrency(to);
+  // rateUSD = how many USD per 1 unit of the currency
+  const inUSD = amt * cFrom.rateUSD; // amount in USD
+  const converted = inUSD / cTo.rateUSD;
+  resultEl.textContent = `${amt} ${from} = ${converted.toFixed(4)} ${to}  (≈ ${inUSD.toFixed(4)} USD)`;
+}
+
+function swap(){ const a=fromS.value; fromS.value=toS.value; toS.value=a; }
+function resetAll(){ fromS.value='USD'; toS.value='EUR'; amountI.value=''; resultEl.textContent='—'; }
+
+// --- Events ---
+convertBtn.addEventListener('click', convert);
+swapBtn.addEventListener('click', ()=>{ swap(); convert(); });
+resetBtn.addEventListener('click', resetAll);
+amountI.addEventListener('keydown', (e)=>{ if(e.key==='Enter') convert(); });
+
+// --- Init ---
+populateSelectors(); renderRates(); renderCards();
+
+</script>
+</body>
+</html>
+
+</html>

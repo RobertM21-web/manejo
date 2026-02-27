@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Potter Juego</title>
+    <link rel="icon" type="image/png" href="../assets/img/icono.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: #0e1a2b;
+
+        }
+
+        .contenedor {
+
+            width: 920px;
+            height: 280px;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #3a3a3a;
+            background: #1c2541;
+
+
+        }
+
+
+        .contenedor::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("hogwarts-bg.png") no-repeat center;
+            background-size: cover;
+            opacity: 0.5;
+
+            z-index: 0;
+        }
+
+        .harry {
+            width: 96px;
+            height: 96px;
+            position: absolute;
+            bottom: 22px;
+            left: 42px;
+            z-index: 2;
+            background: url("harry.png") no-repeat center bottom;
+            background-size: contain;
+            transition: bottom 0.1s;
+        }
+
+        .harry-estrellado {
+            filter: grayscale(.5) brightness(.8);
+            transform: rotate(-8deg);
+        }
+
+        .suelo {
+            width: 200%;
+            height: 42px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.7);
+
+            z-index: 1;
+        }
+
+        .dementor {
+            width: 60px;
+            height: 110px;
+            position: absolute;
+            bottom: 22px;
+            z-index: 2;
+            background: url("dementor.png") no-repeat center;
+            background-size: contain;
+
+            filter: drop-shadow(0 0 8px white);
+        }
+
+
+        .dementor::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 180px;
+            top: -35px;
+            left: -30px;
+            background:
+                radial-gradient(circle at 30px 40px, rgba(255, 255, 255, 0.8) 2px, transparent 3px),
+                radial-gradient(circle at 70px 20px, rgba(255, 255, 255, 0.7) 2px, transparent 3px),
+                radial-gradient(circle at 50px 80px, rgba(255, 255, 255, 0.6) 2px, transparent 3px),
+                radial-gradient(circle at 20px 120px, rgba(255, 255, 255, 0.5) 2px, transparent 3px),
+                radial-gradient(circle at 90px 100px, rgba(255, 255, 255, 0.4) 2px, transparent 3px);
+            animation: flotar 3s infinite ease-in-out;
+            z-index: -1;
+        }
+
+        @keyframes flotar {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-5px) rotate(2deg);
+            }
+        }
+
+        .snitch {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            z-index: 3;
+            background: url("snitch.png") no-repeat center;
+            background-size: contain;
+            filter: brightness(1.2) drop-shadow(0 0 8px gold);
+        }
+
+        .nube {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            z-index: 0;
+            background: url("nube.png") no-repeat;
+            background-size: contain;
+            opacity: 0.8;
+        }
+
+        .score {
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            z-index: 10;
+            color: #ffd700;
+            font-family: Verdana;
+            font-size: 30px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000;
+            /* Agregar margen izquierdo para evitar superposición */
+            left: 70px;
+            text-align: center;
+            width: calc(100% - 140px);
+        }
+
+        .game-over {
+            display: none;
+            position: absolute;
+            width: 100%;
+            top: 100px;
+            text-align: center;
+            color: #ff5555;
+            font-size: 40px;
+            font-family: Verdana;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000;
+            z-index: 10;
+        }
+
+
+        .reiniciar-btn {
+            display: none;
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #ffd700, #ff6b00);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-family: Verdana;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 11;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .reiniciar-btn:hover {
+            background: linear-gradient(45deg, #ff6b00, #ffd700);
+            transform: translateX(-50%) scale(1.05);
+        }
+
+
+        /* BOTÓN VOLVER - Agregar esto */
+        .back-button {
+            position: fixed;         /* se queda fijo en la pantalla */
+            top: 60px;               /* margen desde arriba */
+            left: 60px;              /* margen desde la izquierda */
+            z-index: 1000;
+            
+            background: linear-gradient(145deg, #ffd700, #ffb700);
+            color: #2c1b07;
+            border: 3px solid #8b6513;
+            
+            width: 70px;             /* más grande */
+            height: 70px;
+            border-radius: 50%;      /* circular */
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            font-size: 32px;         /* flecha más grande */
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4),
+                        0 0 20px rgba(255, 215, 0, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(145deg, #ffed4e, #ffc845);
+            transform: scale(1.15);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5),
+                        0 0 25px rgba(255, 215, 0, 0.9);
+        }
+
+    </style>
+</head>
+
+<body>
+    <a href="/integrantes/persona3.html" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </a>
+
+    <div class="contenedor">
+        <div class="suelo"></div>
+        <div class="harry"></div>
+        <div class="score">0</div>
+        <div class="game-over">GAME OVER</div>
+        <button class="reiniciar-btn" onclick="ReiniciarJuego()">JUGAR DE NUEVO</button>
+    </div>
+
+    <script>
+        // --- Variables globales ---
+        var time = new Date();
+        var deltaTime = 0;
+
+        if (document.readyState === "complete" || document.readyState === "interactive") {
+            setTimeout(Init, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", Init);
+        }
+
+        var sueloY = 22, velY = 0, impulso = 1100, gravedad = 2800;
+        var harryPosX = 42, harryPosY = sueloY;
+        var sueloX = 0, velEscenario = 1280 / 3, gameVel = 1, score = 0;
+        var parado = false, saltando = false;
+
+        var tiempoHastaDementor = 2, tiempoDementorMin = 0.9, tiempoDementorMax = 1.8;
+        var dementores = [];
+
+        var tiempoHastaNube = 0.5, tiempoNubeMin = 0.7, tiempoNubeMax = 2.7;
+        var maxNubeY = 270, minNubeY = 100, nubes = [], velNube = 0.5;
+
+        var tiempoHastaSnitch = 5, tiempoSnitchMin = 5, tiempoSnitchMax = 10;
+        var snitchs = [];
+
+        var contenedor, harry, textoScore, suelo, gameOver;
+
+        // --- Funciones principales ---
+        function Init() {
+            time = new Date();
+            Start();
+            Loop();
+        }
+
+        function Loop() {
+            deltaTime = (new Date() - time) / 1000;
+            time = new Date();
+            Update();
+            requestAnimationFrame(Loop);
+        }
+
+        function Start() {
+            gameOver = document.querySelector(".game-over");
+            suelo = document.querySelector(".suelo");
+            contenedor = document.querySelector(".contenedor");
+            textoScore = document.querySelector(".score");
+            harry = document.querySelector(".harry");
+            document.addEventListener("keydown", HandleKeyDown);
+        }
+
+        function Update() {
+            if (parado) return;
+
+            MoverHarry();
+            MoverSuelo();
+            DecidirCrearDementores();
+            DecidirCrearNubes();
+            DecidirCrearSnitch();
+
+            MoverDementores();
+            MoverNubes();
+            MoverSnitchs();
+
+            DetectarColision();
+            velY -= gravedad * deltaTime;
+        }
+
+        // --- Controles ---
+        function HandleKeyDown(ev) {
+            if (ev.keyCode == 32) {
+                if (parado) {
+                    ReiniciarJuego(); // Reinicia si el juego está parado
+                } else {
+                    Saltar(); // Salta si el juego está activo
+                }
+            }
+        }
+
+        function Saltar() {
+            if (harryPosY === sueloY) {
+                saltando = true;
+                velY = impulso;
+            }
+        }
+
+        // --- Movimiento de Harry ---
+        function MoverHarry() {
+            harryPosY += velY * deltaTime;
+            if (harryPosY < sueloY) TocarSuelo();
+            harry.style.bottom = harryPosY + "px";
+        }
+
+        function TocarSuelo() {
+            harryPosY = sueloY;
+            velY = 0;
+            saltando = false;
+        }
+
+        // --- Suelo ---
+        function MoverSuelo() {
+            sueloX += CalcularDesplazamiento();
+            suelo.style.left = -(sueloX % contenedor.clientWidth) + "px";
+        }
+
+        function CalcularDesplazamiento() {
+            return velEscenario * deltaTime * gameVel;
+        }
+
+        // --- Dementores ---
+        function DecidirCrearDementores() {
+            tiempoHastaDementor -= deltaTime;
+            if (tiempoHastaDementor <= 0) CrearDementor();
+        }
+
+        function CrearDementor() {
+            var dementor = document.createElement("div");
+            contenedor.appendChild(dementor);
+            dementor.classList.add("dementor");
+            dementor.posX = contenedor.clientWidth;
+            dementor.style.left = contenedor.clientWidth + "px";
+
+            dementores.push(dementor);
+            tiempoHastaDementor = tiempoDementorMin + Math.random() * (tiempoDementorMax - tiempoDementorMin) / gameVel;
+        }
+
+        function MoverDementores() {
+            for (var i = dementores.length - 1; i >= 0; i--) {
+                if (dementores[i].posX < -dementores[i].clientWidth) {
+                    dementores[i].remove();
+                    dementores.splice(i, 1);
+                    GanarPuntos();
+                } else {
+                    dementores[i].posX -= CalcularDesplazamiento();
+                    dementores[i].style.left = dementores[i].posX + "px";
+                }
+            }
+        }
+
+        // --- Nubes ---
+        function DecidirCrearNubes() {
+            tiempoHastaNube -= deltaTime;
+            if (tiempoHastaNube <= 0) CrearNube();
+        }
+
+        function CrearNube() {
+            var nube = document.createElement("div");
+            contenedor.appendChild(nube);
+            nube.classList.add("nube");
+            nube.posX = contenedor.clientWidth;
+            nube.style.left = contenedor.clientWidth + "px";
+            nube.style.bottom = minNubeY + Math.random() * (maxNubeY - minNubeY) + "px";
+
+            nubes.push(nube);
+            tiempoHastaNube = tiempoNubeMin + Math.random() * (tiempoNubeMax - tiempoNubeMin) / gameVel;
+        }
+
+        function MoverNubes() {
+            for (var i = nubes.length - 1; i >= 0; i--) {
+                if (nubes[i].posX < -nubes[i].clientWidth) {
+                    nubes[i].remove();
+                    nubes.splice(i, 1);
+                } else {
+                    nubes[i].posX -= CalcularDesplazamiento() * velNube;
+                    nubes[i].style.left = nubes[i].posX + "px";
+                }
+            }
+        }
+
+        // --- Snitch ---
+        function DecidirCrearSnitch() {
+            tiempoHastaSnitch -= deltaTime;
+            if (tiempoHastaSnitch <= 0) CrearSnitch();
+        }
+
+        function CrearSnitch() {
+            var snitch = document.createElement("div");
+            contenedor.appendChild(snitch);
+            snitch.classList.add("snitch");
+            snitch.posX = contenedor.clientWidth;
+            snitch.style.left = contenedor.clientWidth + "px";
+            snitch.style.bottom = 100 + Math.random() * 120 + "px";
+
+            snitchs.push(snitch);
+            tiempoHastaSnitch = tiempoSnitchMin + Math.random() * (tiempoSnitchMax - tiempoSnitchMin);
+        }
+
+        function MoverSnitchs() {
+            for (var i = snitchs.length - 1; i >= 0; i--) {
+                if (snitchs[i].posX < -snitchs[i].clientWidth) {
+                    snitchs[i].remove();
+                    snitchs.splice(i, 1);
+                } else {
+                    snitchs[i].posX -= CalcularDesplazamiento();
+                    snitchs[i].style.left = snitchs[i].posX + "px";
+                }
+            }
+        }
+
+        // --- Colisiones ---
+        function DetectarColision() {
+            // Dementores
+            for (var i = 0; i < dementores.length; i++) {
+                if (dementores[i].posX > harryPosX + harry.clientWidth) break;
+                if (IsCollision(harry, dementores[i], 10, 30, 15, 20)) GameOver();
+            }
+
+            // Snitch
+            for (var i = snitchs.length - 1; i >= 0; i--) {
+                if (IsCollision(harry, snitchs[i], 10, 10, 10, 10)) {
+                    score += 10;
+                    textoScore.innerText = score;
+                    snitchs[i].remove();
+                    snitchs.splice(i, 1);
+                }
+            }
+        }
+
+        function IsCollision(a, b, pt, pr, pb, pl) {
+            var aRect = a.getBoundingClientRect();
+            var bRect = b.getBoundingClientRect();
+
+            return !(
+                ((aRect.top + aRect.height - pb) < (bRect.top)) ||
+                (aRect.top + pt > (bRect.top + bRect.height)) ||
+                ((aRect.left + aRect.width - pr) < bRect.left) ||
+                (aRect.left + pl > (bRect.left + bRect.width))
+            );
+        }
+
+        // --- Game Over ---
+        function GameOver() {
+            harry.classList.add("harry-estrellado");
+            parado = true;
+            gameOver.style.display = "block";
+        }
+
+        // --- Puntos ---
+        function GanarPuntos() {
+            score++;
+            textoScore.innerText = score;
+        }
+
+        // --- Función de Reinicio ---
+        function ReiniciarJuego() {
+            // Resetear variables
+            harryPosY = sueloY;
+            velY = 0;
+            sueloX = 0;
+            gameVel = 1;
+            score = 0;
+            parado = false;
+            saltando = false;
+
+            // Limpiar obstáculos y snitchs
+            LimpiarElementos(dementores);
+            LimpiarElementos(nubes);
+            LimpiarElementos(snitchs);
+
+            // Resetear tiempo
+            tiempoHastaDementor = 2;
+            tiempoHastaNube = 0.5;
+            tiempoHastaSnitch = 5;
+
+            // Resetear apariencia
+            harry.classList.remove("harry-estrellado");
+            harry.style.bottom = sueloY + "px";
+            textoScore.innerText = "0";
+            gameOver.style.display = "none";
+            document.querySelector(".reiniciar-btn").style.display = "none";
+        }
+
+        function LimpiarElementos(arrayElementos) {
+            for (var i = arrayElementos.length - 1; i >= 0; i--) {
+                if (arrayElementos[i].parentNode) {
+                    arrayElementos[i].parentNode.removeChild(arrayElementos[i]);
+                }
+            }
+            arrayElementos.length = 0;
+        }
+
+        // --- Modifica la función GameOver ---
+        function GameOver() {
+            harry.classList.add("harry-estrellado");
+            parado = true;
+            gameOver.style.display = "block";
+            // MOSTRAR BOTÓN DE REINICIO
+            document.querySelector(".reiniciar-btn").style.display = "block";
+        }
+    </script>
+</body>
+
+</html>
