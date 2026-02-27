@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil — Korayma Pico</title>
+  <link rel="icon" type="image/png" href="../assets/img/icono.png">
+  <link rel="stylesheet" href="styles-individual.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="back" href="../index.html" aria-label="Volver a inicio">← Volver</a>
+    <h1 class="page-title">Perfil del Integrante</h1>
+  </header>
+
+  <main class="layout">
+    <!-- ===== PANEL IZQUIERDO (EDITAR) ===== -->
+    <aside class="sidebar">
+      <img class="avatar-xl" src="../assets/img/kora.jpeg" alt="Foto de Nombre Apellido">
+
+      <h2 class="name">Korayma Pico</h2>
+      <p class="role">Rol: UX/UI Designer</p>
+
+      <dl class="facts">
+        <div>
+          <dt>Nombres</dt>
+          <dd>Korayma Pico</dd>
+        </div>
+        <div>
+          <dt>Edad</dt>
+          <dd>20</dd>
+        </div>
+        <div>
+          <dt>Fecha de nacimiento</dt>
+          <dd>2005-12-23</dd>
+        </div>
+        <div>
+          <dt>Ciudad</dt>
+          <dd>Quito, Ecuador</dd>
+        </div>
+        <div>
+          <dt>Email</dt>
+          <dd><a href="mailto:correo@ejemplo.com">bpico3173@uta.edu.ec</a></dd>
+        </div>
+      </dl>
+
+      <div class="tags">
+        <span>HTML</span><span>Java</span><span>JS</span>
+      </div>
+    </aside>
+
+    <!-- ===== CONTENIDO DERECHO (EDITAR) ===== -->
+    <section class="content">
+      <!-- Bloque desplegable 1 -->
+      <details class="card" open>
+        <summary>Biografía</summary>
+        <p>
+          Soy Kora, amante de la moda dark y colores oscuros.
+          Estudiante de Ingeniería de Software en la Universidad Técnica de Ambato (FISEI). 
+          
+        </p>
+        <p>
+         Me gustan las mascotas, especialmente los perros, fan de trueno y amante de la música. Me considero una persona creativa 
+         y siempre dispuesta a aprender cosas nuevas.
+
+        </p>
+        <p>
+          Mi meta es continuar aprendiendo sobre programación y diseño, terminar la carrera 
+      </details>
+
+      <!-- Bloque desplegable 2 -->
+      <details class="card">
+        <summary>¿Qué me gusta hacer?</summary>
+        <ul class="bullets">
+          <li>Leer libros que fomente el crecimiento personal</li>
+          <li>Pasar tiempo con mi mascota</li>
+          <li>Ver las películas</li>
+          <li>Aprender diferentes cosas constantemente </li>
+        </ul>
+      </details>
+
+    
+
+      <!-- Bloque desplegable 4 -->
+      <details class="card">
+        <summary>Contacto & Redes</summary>
+        <div class="redes-contacto">
+          <a href="https://github.com/Mauri10G" class="red-link" target="_blank" rel="noopener" aria-label="GitHub">
+            <img src="../assets/img/github.png" alt="GitHub" class="red-icon">
+            <span>GitHub</span>
+          </a>
+          <a href="https://www.instagram.com/yo__kora/" class="red-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="../assets/img/instagram.png" alt="Instagram" class="red-icon">
+            <span>Instagram</span>
+          </a>
+          <a href="mailto:bpico3173@uta.edu.ec" class="red-link" aria-label="Email">
+            <img src="../assets/img/mail.png" alt="Email" class="red-icon">
+            <span>Email</span>
+          </a>
+          <a href="tel:+593987314959" class="red-link" aria-label="Teléfono">
+            <img src="../assets/img/phone.png" alt="Teléfono" class="red-icon">
+            <span>+593 98 731 459</span>
+          </a>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>🎮 Mi Juego Interactivo</summary>
+        <div style="text-align: center; padding: 20px;">
+          <a href="../juegos/Juego Harry Potter/index.html" class="btn-link" style="margin: 15px auto; display: inline-block;">
+            Jugar ahora
+          </a>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Equipo Dinamita — UTA</p>
+  </footer>
+
+  <script src="toggle-remember.js"></script>
+
+</body>
+
+</html>

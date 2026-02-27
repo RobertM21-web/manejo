@@ -1,0 +1,516 @@
+:root{
+  --bg:#f6f7fb;
+  --panel:#ffffff;
+  --ink:#0f172a;
+  --muted:#475569;
+  --line:rgba(15,23,42,.10);
+  --soft:#eef1f6;
+  --chip:#eef0f6;
+  --shadow:0 16px 40px rgba(15,23,42,.10);
+  --radius:18px;
+  --t:.25s cubic-bezier(.2,.7,.2,1);
+}
+
+/* Evita “saltos” cuando aparece/desaparece la barra de scroll */
+html{ scrollbar-gutter: stable both-edges }
+
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+  margin:0;
+  font-family: ui-sans-serif,system-ui,"Segoe UI",Roboto,Arial;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.6;
+}
+
+/* Topbar */
+.topbar{
+  display:flex; align-items:center; gap:16px;
+  padding:16px 20px; background:linear-gradient(#fff,#f4f6fb);
+  border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:10;
+}
+.back{ color:#334155; text-decoration:none; font-weight:700 }
+.back:hover{ text-decoration:underline }
+.page-title{ margin:0 auto; text-align:center; font-size:1.25rem; font-weight:800; color:#111827 }
+
+/* Layout */
+.layout{
+  max-width:1200px; margin:28px auto; padding:0 16px;
+  display:grid; gap:24px;
+  grid-template-columns:400px 1fr;
+}
+@media (max-width:1080px){ .layout{ grid-template-columns:360px 1fr } }
+@media (max-width:980px){  .layout{ grid-template-columns:1fr } }
+
+/* Panel izquierdo mejorado */
+.sidebar {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(15,23,42,0.13);
+  padding: 32px 24px 28px 24px;
+  position: sticky;
+  top: 86px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Avatar redondo y protagonista */
+/* Imagen de perfil más grande en panel izquierdo */
+.avatar-xl {
+  width: 165px;
+  height: 165px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #e0e7ef;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 16px rgba(15,23,42,0.10);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Nombre grande y centrado */
+.name {
+  text-align: center;
+  margin: 0 0 2px 0;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #1e293b;
+}
+
+/* Rol destacado tipo badge */
+.role {
+  display: inline-block;
+  text-align: center;
+  margin: 0 0 10px 0;
+  color: #334155;
+  background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 100%);
+  padding: 7px 18px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  font-size: .98rem;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(15,23,42,.06);
+}
+
+/* Facts con fondo sutil y separación */
+.facts {
+  width: 100%;
+  margin: 10px 0 10px 0;
+  font-size: .99rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f7f8fa;
+  border-radius: 12px;
+  padding: 14px 14px 10px 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.facts div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.facts dt {
+  font-weight: 700;
+  color: #1f2937;
+  min-width: 90px;
+}
+
+.facts dd {
+  margin: 0;
+  color: #4b5563;
+  text-align: right;
+  flex: 1;
+}
+
+.facts a {
+  color: #1e293b;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* Tags tipo chip */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  justify-content: center;
+}
+
+.tags span {
+  background: #f1f5f9;
+  border: 1px solid #e0e7ef;
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: #334155;
+  font-weight: 600;
+  font-size: .93rem;
+  box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+  transition: background 0.18s, color 0.18s;
+}
+
+.tags span:hover {
+  background: #e0e7ef;
+  color: #1e293b;
+}
+
+/* Contenedor derecho */
+.content{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:14px 12px;             /* compacto */
+  display:grid; gap:6px;         /* poco aire entre tarjetas */
+}
+
+/* Cards <details> */
+.card{
+  margin:0;
+  background:#fbfcff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 6px 18px rgba(15,23,42,.06);
+  overflow:hidden;                       /* oculta contenido al estar cerrado */
+  transition:max-height var(--t), background var(--t), box-shadow var(--t);
+}
+
+/* Header: padding fijo (no se mueve) */
+.card > summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex; align-items:center;
+  padding:10px 14px;                     /* mismo abierto/cerrado */
+  min-height:40px;                       /* altura estable */
+  font-weight:800; color:#111827; line-height:1.2;
+  position:relative; user-select:none; background:transparent;
+}
+.card > summary::-webkit-details-marker{ display:none }
+.card > summary:hover{ background:#f3f6fb }  /* pinta todo el rectángulo */
+
+/* Flecha */
+.card > summary::after{
+  content:"▸";
+  position:absolute; right:12px; top:50%;
+  transform:translateY(-50%) rotate(0deg);
+  transition:transform var(--t), color var(--t);
+  color:#5b6b80; font-size:.95rem; font-weight:800;
+}
+.card[open] > summary::after{
+  transform:translateY(-50%) rotate(90deg);
+  color:#425166;
+}
+
+/* Cerrado: casi sin aire */
+.card:not([open]){ max-height:44px }
+.card[open]{ max-height:none }           /* Abierto: sin límite */
+
+/* Contenido interno */
+.card > *:not(summary){ padding:16px 20px }
+.card p{ margin:0; color:#374151 }
+
+/* Viñetas personalizadas */
+.bullets{
+  list-style:none; margin:0; padding-left:0;
+  display:grid; gap:10px; color:#374151;
+}
+.bullets li{
+  position:relative; padding-left:1.4rem; line-height:1.55;
+}
+.bullets li::before{
+  content:""; position:absolute; left:0; top:0.9em; transform:translateY(-50%);
+  width:8px; height:8px; border-radius:50%;
+  background:#94a3b8; box-shadow:0 0 0 3px #eceff6 inset; opacity:.95;
+}
+
+/* Proyectos */
+.projects{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:12px;
+}
+.proj {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 12px 18px 12px; /* más espacio abajo */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra todo horizontalmente */
+  justify-content: flex-end;   /* empuja el contenido hacia abajo si hay espacio */
+  min-height: 170px;           /* opcional: asegura altura mínima */
+  position: relative;
+}
+.proj h3{ margin:.2rem 0 .3rem; font-size:1rem }
+.btn-link {
+  display: block;
+  margin: 18px auto 0 auto; /* margen superior y centrado horizontal */
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: #f6f7fb;
+  border: 1px solid var(--line);
+  color: #111827;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background var(--t), transform var(--t), box-shadow var(--t);
+  box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+  text-align: center;
+}
+
+.btn-link:hover{ background:#eceff6; transform:translateY(-1px) }
+
+/* Links */
+.links{ display:flex; gap:12px; flex-wrap:wrap }
+.links a{ color:#111827; text-decoration:underline; font-weight:700 }
+
+/* Footer */
+.footer{ text-align:center; color:#6b7280; font-size:.95rem; padding:28px 0 40px }
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none!important; transition:none!important; }
+}
+
+/* ...código existente... */
+
+/* Contenedor derecho */
+.content{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:14px 12px;
+  display:flex; flex-direction:column; gap:12px; /* Cambia grid por flex y aumenta gap */
+  transition:height var(--t);
+}
+
+/* Cards <details> */
+.card{
+  margin:0;
+  background:#fbfcff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 6px 18px rgba(15,23,42,.06);
+  overflow:hidden;
+  transition:max-height var(--t), background var(--t), box-shadow var(--t);
+  max-width: 100%; /* Asegura que no crezca más que el contenedor */
+}
+
+/* Header: padding fijo (no se mueve) */
+.card > summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex; align-items:center;
+  padding:10px 14px;
+  min-height:40px;
+  font-weight:800; color:#111827; line-height:1.2;
+  position:relative; user-select:none; background:transparent;
+}
+
+/* Flecha */
+.card > summary::after{
+  content:"▸";
+  position:absolute; right:12px; top:50%;
+  transform:translateY(-50%) rotate(0deg);
+  transition:transform var(--t), color var(--t);
+  color:#5b6b80; font-size:.95rem; font-weight:800;
+}
+.card[open] > summary::after{
+  transform:translateY(-50%) rotate(90deg);
+  color:#425166;
+}
+
+/* Cerrado: altura mínima solo para el summary */
+.card:not([open]){ max-height:56px; } /* Un poco más alto para evitar recortes */
+.card[open]{ max-height:1000px; transition:max-height 0.4s cubic-bezier(.2,.7,.2,1); }
+
+.redes-contacto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.red-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f3f5f8;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 8px 18px;
+  color: #1e293b;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+  transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+}
+
+.red-link:hover {
+  background: #e0e7ef;
+  color: #334155;
+  box-shadow: 0 4px 16px rgba(15,23,42,0.10);
+}
+
+.red-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* =========================================================
+   MÓVIL / TABLET: ajustes responsivos sin romper lo existente
+   Pégalo al final de tu styles-individual.css
+   ========================================================= */
+
+/* Suaviza toques en móvil */
+body { -webkit-tap-highlight-color: transparent; }
+
+/* Tablets medianas: aprieta un poco los márgenes */
+@media (max-width: 820px){
+  .layout{
+    gap: 18px;
+    padding: 0 12px;
+  }
+  .sidebar{
+    gap: 14px;
+  }
+  .avatar-xl{ width: 150px; height: 150px; }
+}
+
+/* Móviles: 1 columna, sin sticky, tipografías y espacios más cómodos */
+@media (max-width: 600px){
+  .layout{
+    grid-template-columns: 1fr;   /* fuerza 1 columna */
+    gap: 16px;
+    padding: 0 10px;
+  }
+
+  /* Quita sticky en móvil para evitar solapes al hacer scroll */
+  .sidebar{
+    position: static;
+    top: auto;
+    padding: 22px 16px;
+    border-radius: 16px;
+  }
+
+  .avatar-xl{ width: 132px; height: 132px; }
+
+  .name{ font-size: 1.15rem; }
+  .role{
+    font-size: .9rem;
+    padding: 6px 14px;
+  }
+
+  /* Facts: más legibles y en bloque */
+  .facts{
+    padding: 12px;
+    gap: 8px;
+  }
+  .facts div{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .facts dt{
+    min-width: 0;
+    font-size: .95rem;
+  }
+  .facts dd{
+    width: 100%;
+    text-align: left;
+    font-size: .98rem;
+  }
+
+  /* Contenedor derecho más compacto */
+  .content{
+    padding: 10px;
+    gap: 8px;
+    border-radius: 16px;
+  }
+
+  /* Área táctil de la barra de título de cada card */
+  .card > summary{
+    min-height: 48px;
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+  /* Al estar cerrada, que no “corte” texto del summary */
+  .card:not([open]){ max-height: 54px; }
+
+  /* Contenido interno un pelín más compacto */
+  .card > *:not(summary){ padding: 14px 14px; }
+
+  /* Listas con bullets: aire y legibilidad */
+  .bullets{ gap: 8px; }
+  .bullets li{ padding-left: 1.2rem; }
+
+  /* Proyectos: 1 columna y botones centrados */
+  .projects{
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .proj{
+    min-height: initial;
+    align-items: stretch;
+  }
+  .btn-link{
+    width: 100%;
+    max-width: 360px;
+  }
+
+  /* Enlaces de contacto: fáciles de tocar y a ancho completo si hace falta */
+  .links{
+    gap: 10px;
+  }
+  .links a{
+    padding: 8px 10px;
+  }
+
+  .redes-contacto{
+    gap: 10px;
+  }
+  .red-link{
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Ajuste de la flecha del summary para que no quede pegada al borde */
+  .card > summary::after{
+    right: 10px;
+    font-size: 1rem;
+  }
+}
+
+/* iPhone con “notch”: respeta áreas seguras inferior/superior */
+@supports (padding: max(0px)){
+  body{
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+}
+
+.avatar-xl{
+  width: 165px;              /* desktop */
+  aspect-ratio: 1 / 1;       /* asegura que height = width */
+  height: auto;              /* ahora sí, pero el alto viene de aspect-ratio */
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* móvil */
+@media (max-width: 600px){
+  .avatar-xl{ width: 132px; }  /* el alto se calcula solo por el aspect-ratio */
+}

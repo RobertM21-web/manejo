@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil — Robert Montesdeoca</title>
+  <link rel="icon" type="image/png" href="../assets/img/icono.png">
+  <link rel="stylesheet" href="styles-individual.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="../index.html" aria-label="Volver a inicio">← Volver</a>
+    <h1 class="page-title">Perfil del Integrante</h1>
+  </header>
+
+  <main class="layout">
+    <!-- ===== PANEL IZQUIERDO (EDITAR) ===== -->
+    <aside class="sidebar">
+      <img class="avatar-xl" src="../assets/img/foto robert.jpeg" alt="Foto de Nombre Apellido">
+      
+      <h2 class="name"></h2>
+      <p class="role">Rol: Running</p>
+
+      <dl class="facts">
+        <div><dt>Nombres</dt><dd>Robert Montesdeoca </dd></div>
+        <div><dt>Edad</dt><dd>21</dd></div>
+        <div><dt>Fecha de nacimiento</dt><dd>2005-01-21</dd></div>
+        <div><dt>Ciudad</dt><dd>Ambato, Ecuador</dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:rmontesdeoca5639@uta.edu.ec">rmontesdeoca5639@uta.edu.ec</a></dd></div>
+      </dl>
+
+      <div class="tags">
+        <span>HTML</span><span>CSS</span><span>JS</span><span>UI</span>
+      </div>
+    </aside>
+
+    <!-- ===== CONTENIDO DERECHO (EDITAR) ===== -->
+    <section class="content">
+      <!-- Bloque desplegable 1 -->
+      <details class="card" open>
+        <summary>Biografía</summary>
+        <p>
+          Soy un estudiante con interés en el desarrollo de software, la programación y me gusta mucho jugar/ver futbol. Me considero una persona creativa, proactiva y con habilidades para el trabajo en equipo.
+        </p>
+        <p>
+          Amo la música, siento que es una forma de expresión que me ayuda a relajarme y a inspirarme. 
+      
+        </p>
+      </details>
+
+      <!-- Bloque desplegable 2 -->
+      <details class="card">
+        <summary>¿Qué me gusta hacer?</summary>
+        <ul class="bullets">
+          <li>Me gusta diseñar de páginas web.</li>
+          <li>Me gusta jugar al futbol.</li>
+          <li>Amo la musica.</li>
+          <li>Me gusta dibujar y el arte.</li>
+        </ul>
+      </details>
+
+     
+      <!-- Bloque desplegable 4 -->
+      <details class="card">
+        <summary>Contacto & Redes</summary>
+        <div class="redes-contacto">
+          <a href="https://github.com/TTORMENTl" class="red-link" target="_blank" rel="noopener" aria-label="GitHub">
+            <img src="../assets/img/github.png" alt="GitHub" class="red-icon">
+            <span>GitHub</span>
+          </a>
+          <a href="https://www.instagram.com/roberttt21_/" class="red-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="../assets/img/instagram.png" alt="Instagram" class="red-icon">
+            <span>Instagram</span>
+          </a>
+          <a href="mailto:rmontesdeoca5639@uta.edu.ec" class="red-link" aria-label="Email">
+            <img src="../assets/img/mail.png" alt="Email" class="red-icon">
+            <span>Email</span>
+          </a>
+          <a href="tel:+593 969094832" class="red-link" aria-label="Teléfono">
+            <img src="../assets/img/phone.png" alt="Teléfono" class="red-icon">
+            <span>+593 969094832</span>
+          </a>
+        </div>
+      </details>
+      <details class="card">
+        <summary>🎮 Mi Juego Interactivo</summary>
+        <div style="text-align: center; padding: 20px;">
+          <a href="../juegos/Calculadora/index.html" class="btn-link" style="margin: 15px auto; display: inline-block;">
+            Jugar ahora
+          </a>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Equipo Dinamita — UTA</p>
+  </footer>
+
+  <script src="toggle-remember.js"></script>
+
+</body>
+</html>
